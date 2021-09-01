@@ -1,8 +1,11 @@
 /*
     C program to implement DDA line drawing algorithm using OpenGL
+    
+    Keep large absolute difference to see the animation so that the
+    number of steps are > 150
 */
 #include <stdio.h>
-#include <GL\glut.h>
+#include <GL/glut.h>
 #include <math.h>
 
 // Coordinates
@@ -42,13 +45,13 @@ void DDA()
     printf("Starting point: (%d,%d)\n", x1, y_1);
     printf("End point: (%d,%d)\n", x2, y2);
     printf("Absolute differences: (%d,%d)\n", dx, dy);
-    printf("Steps: %f\n", steps);
-    printf("Increments: (%f,%f")\n,xINC,yINC);
-    printf("STEP:    |(X,Y)|      Point")
+    printf("Steps: %.3f\n", steps);
+    printf("Increments: (%.3f,%.3f)\n",xINC,yINC);
+    printf("STEP:    |(X,Y)|                      Point\n\n");
 
-        for (int i = 0; i <= steps; i++)
+    for (int i = 0; i <= steps; i++)
     {
-        printf("%d:    |(%f,%f)|      (%d,%d)\n", i + 1, X, Y, (int)round(X), (int)round(Y));
+        printf("%d:    |(%.3f,%.3f)|      (%d,%d)\n", i, X, Y, (int)round(X), (int)round(Y));
 
         //Draw
         setPixel((int)round(X), (int)round(Y));
@@ -70,12 +73,12 @@ void myInit(void)
     glColor3f(0.0, 1.0, 0.0);
 
     // breadth of picture boundary is 3 pixel
-    glPointSize(3.0);
+    glPointSize(2.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     // setting window dimension in X- and Y- direction
-    gluOrtho2D(-780, 780, -420, 420);
+    gluOrtho2D(-1024, 1024, -720, 720);
 }
 int main(int argc, char **argv)
 {
@@ -109,4 +112,4 @@ int main(int argc, char **argv)
 }
 
 //Terminal command to run on Linux
-//gcc DDA.c -lGL -lGLU -lglut && ./a.out
+//g++ DDA.c -lGL -lGLU -lglut && ./a.out
