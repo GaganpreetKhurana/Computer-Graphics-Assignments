@@ -21,8 +21,8 @@ int x2;
 int y2;
 
 //SET SCREEN SIZE/ORIGIN
-const int SCREEN_WIDTH_DDA = 1920;
-const int SCREEN_HEIGHT_DDA = 1080;
+const int SCREEN_WIDTH_DDA = 1920/2;
+const int SCREEN_HEIGHT_DDA = 1080/2;
 const int SCREEN_ORIGIN_X_DDA = 0;
 const int SCREEN_ORIGIN_Y_DDA = 0;
 
@@ -39,7 +39,7 @@ void setPixel(int x, int y)
 //DDA algorithm
 void DDA()
 {
-    // Abs difference
+    // Difference
     int dx =  x2 - x1; 
     int dy = y2 - y_1;
     
@@ -57,7 +57,7 @@ void DDA()
 
     printf("Starting point: (%d,%d)\n", x1, y_1);
     printf("End point: (%d,%d)\n", x2, y2);
-    printf("Absolute differences: (%d,%d)\n", dx, dy);
+    printf("Difference: (%d,%d)\n", dx, dy);
     printf("Steps: %.3f\n", steps);
     printf("Increments: (%.3f,%.3f)\n",xINC,yINC);
     printf("STEP:    |(X,Y)|                      Point\n\n");
