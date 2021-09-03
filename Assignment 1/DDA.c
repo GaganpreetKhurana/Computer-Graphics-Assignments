@@ -4,8 +4,8 @@
     Keep large absolute difference to see the animation so that the
     number of steps are > 150
 
-    ORIGIN (0,0) is set at TOP left corner - x:[0,1920], y:[0,1080]
-    To move it to center of screen comment line 97 and uncomment line 100 - x:[-960,960], y:[-540,540]
+    ORIGIN (0,0) is set at TOP left corner - Range x:[0,960], y:[0,540]
+    To move it to center of screen comment line 97 and uncomment line 100 - Range: x:[-480,480], y:[-270,270]
 
     Terminal command to run on Linux
     g++ DDA.c -lGL -lGLU -lglut && ./a.out
