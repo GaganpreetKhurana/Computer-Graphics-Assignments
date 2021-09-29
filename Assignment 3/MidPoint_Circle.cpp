@@ -12,77 +12,95 @@
 #include <math.h>
 using namespace std;
 
+void plotPoints(int x, int y, int X, int Y)
+{
+    // (x,y)
+    cout << "(" << X + x << ", " << -Y + y << ") ";
+    putpixel(X + x, -Y + y, 2);
+    delay(10);
+
+    // (y,x)
+    cout << "(" << Y + x << ", " << -X + y << ") ";
+    putpixel(Y + x, -X + y, 3);
+    delay(10);
+
+    // (y,-x)
+    cout << "(" << Y + x << ", " << X + y << ") ";
+    putpixel(Y + x, X + y, 4);
+    delay(10);
+
+    // (x,-y)
+    cout << "(" << X + x << ", " << Y + y << ") ";
+    putpixel(X + x, Y + y, 5);
+    delay(10);
+
+    // (-x,-y)
+    cout << "(" << -X + x << ", " << Y + y << ") ";
+    putpixel(-X + x, Y + y, 6);
+    delay(10);
+
+    // (-y,-x)
+    cout << "(" << -Y + x << ", " << X + y << ")";
+    putpixel(-Y + x, X + y, 7);
+    delay(10);
+
+    // (-y,x)
+    cout << "(" << -Y + x << ", " << -X + y << ")";
+    putpixel(-Y + x, -X + y, 8);
+    delay(10);
+
+    // (-x,y)
+    cout << "(" << -X + x << ", " << -Y + y << ")\n";
+    putpixel(-X + x, -Y + y, 9);
+    delay(10);
+}
 void DrawCircle(int x, int y, int r)
 {
-    cout << "Center: (" << x << "," << y<< ")\n";
-    cout << "Radius: " << r <<endl;
+    cout << "Center: (" << x << "," << y << ")\n";
+    cout << "Radius: " << r << endl;
+
+    // for printing text at desired screen location.
+    char buffer[30];
+
+    // Title
+    sprintf(buffer, " Mid Point Circle Drawing Algorithm ");
+    outtextxy(200, 5, buffer);
+
+    //Radius
+    sprintf(buffer, "Radius: %d", r);
+    outtextxy(250, 35, buffer);
+
+    //Centre Point
+    putpixel(x, y, 10);
+    sprintf(buffer, "Centre: (%d,%d)", x, y);
+    outtextxy(x - 45, y + 15, buffer);
 
     // Starting Points
-    int X = r;
-    int Y = 0;
+    int X = 0;
+    int Y = r;
 
-    // Printing the initial point on the axes
-    // after translation
-    cout << "(" << X + x << ", " << Y + y << ") ";
-    // delay(50);
-    putpixel(X + x , Y + y, 7);
-     
-    // When radius is zero only a single
-    // point will be printed
-    if (r > 0)
-    {
-        cout << "(" << X + x << ", " << -Y + y << ") ";
-        putpixel(X + x , -Y + y, 7);
-        cout << "(" << Y + x << ", " << X + y << ") ";
-        putpixel(Y + x , X + y, 7);
-        cout << "(" << -Y + x << ", " << X + y << ")\n";
-        putpixel(-Y + x , X + y, 7);
-    }
-     
-    // Initialising the value of P
+    // Printing the initial point on the axes after translation
+    plotPoints(x, y, X, Y);
+
+    // Initialising the value of P (Decision Parameter)
     int P = 1 - r;
-    while (X > Y)
+    while (Y > X)
     {
-        Y++;
-         
+
         // Mid-point is inside or on the perimeter
-        if (P <= 0)
-            P = P + 2*Y + 1;
-        // Mid-point is outside the perimeter
+        if (P < 0)
+        {
+            P += 2 * X + 3;
+        }
         else
         {
-            X--;
-            P = P + 2*Y - 2*X + 1;
+            // Mid-point is outside the perimeter
+            P += 2 * X - 2 * Y + 5;
+            Y--;
         }
-         
-        // All the perimeter points have already been printed
-        if (X < Y)
-            break;
-         
-        // Printing the generated point and its reflection
-        // in the other octants after translation
-        cout << "(" << X + x << ", " << Y + y << ") ";
-        putpixel(X + x , Y + y, 7);
-        cout << "(" << -X + x << ", " << Y + y << ") ";
-        putpixel(-X + x , Y + y, 7);
-        cout << "(" << X + x << ", " << -Y + y << ") ";
-        putpixel(X + x , -Y + y, 7);
-        cout << "(" << -X + x << ", " << -Y + y << ")\n";
-        putpixel(-X + x , -Y + y, 7);
-         
-        // If the generated point is on the line x = y then
-        // the perimeter points have already been printed
-        if (X != Y)
-        {
-            cout << "(" << Y + x << ", " << X + y << ") ";
-            putpixel(Y + x , X + y, 7);
-            cout << "(" << -Y + x << ", " << X + y << ") ";
-            putpixel(-Y + x , X + y, 7);
-            cout << "(" << Y + x << ", " << -X + y << ") ";
-            putpixel(Y + x , -X + y, 7);
-            cout << "(" << -Y + x << ", " << -X + y << ")\n";
-            putpixel(-Y + x , -X + y, 7);
-        }
+
+        plotPoints(x, y, X, Y);
+        X++;
     }
 }
 
@@ -97,7 +115,7 @@ int main()
     int y;
     int r;
 
-    // Take coordinates as input from user
+    // Take center coordinates and radius as input from user
     cout << "Enter coordinates of Center:\n";
     cout << "x: ";
     cin >> x;
@@ -105,10 +123,11 @@ int main()
     cin >> y;
     cout << "Enter Radius: ";
     cin >> r;
-    cout << "\n";
+    cout << "\n\n";
+    cout << "Points: \n";
+    cout << "";
 
     // Draw Circle using Mid Point Circle Drawing Algorithm
-    DrawCircle(x,y,r);
+    DrawCircle(x, y, r);
     getch();
-    closegraph();
 }
