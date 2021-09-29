@@ -1,7 +1,6 @@
 /*
     Assumptions:
     1. Top Left is Origin(0,0)
-    2. All inputs are +ve
     
     Command to run (Windows):
     g++ MidPoint_Circle.cpp -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 && a
@@ -15,37 +14,37 @@ using namespace std;
 void plotPoints(int x, int y, int X, int Y)
 {
     // (x,y)
-    cout << "(" << X + x << ", " << -Y + y << ") ";
+    cout << "(" << X + x << ", " << -Y + y << ") | ";
     putpixel(X + x, -Y + y, 2);
     delay(10);
 
     // (y,x)
-    cout << "(" << Y + x << ", " << -X + y << ") ";
+    cout << "(" << Y + x << ", " << -X + y << ") | ";
     putpixel(Y + x, -X + y, 3);
     delay(10);
 
     // (y,-x)
-    cout << "(" << Y + x << ", " << X + y << ") ";
+    cout << "(" << Y + x << ", " << X + y << ") | ";
     putpixel(Y + x, X + y, 4);
     delay(10);
 
     // (x,-y)
-    cout << "(" << X + x << ", " << Y + y << ") ";
+    cout << "(" << X + x << ", " << Y + y << ") | ";
     putpixel(X + x, Y + y, 5);
     delay(10);
 
     // (-x,-y)
-    cout << "(" << -X + x << ", " << Y + y << ") ";
+    cout << "(" << -X + x << ", " << Y + y << ") | ";
     putpixel(-X + x, Y + y, 6);
     delay(10);
 
     // (-y,-x)
-    cout << "(" << -Y + x << ", " << X + y << ")";
+    cout << "(" << -Y + x << ", " << X + y << ") | ";
     putpixel(-Y + x, X + y, 7);
     delay(10);
 
     // (-y,x)
-    cout << "(" << -Y + x << ", " << -X + y << ")";
+    cout << "(" << -Y + x << ", " << -X + y << ") | ";
     putpixel(-Y + x, -X + y, 8);
     delay(10);
 
@@ -58,6 +57,8 @@ void DrawCircle(int x, int y, int r)
 {
     cout << "Center: (" << x << "," << y << ")\n";
     cout << "Radius: " << r << endl;
+    cout << "Points: \n";
+    cout << "(x,y)  |  (y,x)   |  (y,-x)   |  (x,-y)  |   (-x,-y)   |  (-y,-x)   |  (-y,x)   |  (-x,y)\n";
 
     // for printing text at desired screen location.
     char buffer[30];
@@ -121,13 +122,20 @@ int main()
     cin >> x;
     cout << "y: ";
     cin >> y;
+
     cout << "Enter Radius: ";
     cin >> r;
     cout << "\n\n";
-    cout << "Points: \n";
-    cout << "";
 
-    // Draw Circle using Mid Point Circle Drawing Algorithm
-    DrawCircle(x, y, r);
-    getch();
+    if (r < 0)
+    {
+        cout << "Radius cannot be negative!\n";
+        return 0;
+    }
+    else
+    {
+        // Draw Circle using Mid Point Circle Drawing Algorithm
+        DrawCircle(x, y, r);
+        getch();
+    }
 }
