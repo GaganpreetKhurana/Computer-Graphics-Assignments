@@ -83,48 +83,26 @@ void DrawCircle(int x_center, int y_center, int r)
     // Printing the initial point on the axes after translation
     plotPoints(x_center, y_center, X, Y);
 
-    // Initialising the value of P (Decision Parameter)
-    int dD = 2 * (1 - r);
-    while (Y > X)
+    // Initialising the value of d (Decision Parameter)
+    int d = 3 - 2 * r;
+
+    while (Y >= X)
     {
-        plotPoints(x_center, y_center, X, Y);
-        if (dD < 0)
+        X++;
+
+        // Check the decision parameter and update Y,d accordingly
+        if (d > 0)
         {
-            int delta = 2 * dD + 2 * Y - 1;
-            X++;
-            if (delta <= 0)
-            {
-                dD += 2 * X + 1;
-            }
-            else
-            {
-                Y--;
-                dD += 2 * X - 2 * Y + 2;
-            }
-            
-        }
-        else if (dD > 0)
-        {
-            int delta = 2 * X - 2 * dD + 1;
             Y--;
-            if (delta < 0)
-            {
-                dD += -2 * Y + 1;
-            }
-            else
-            {
-                X++;
-                dD += 2 * X - 2 * Y + 2;
-            }
+            d += 4 * (X - Y) + 10;
         }
         else
         {
-            X++;
-            Y--;
-            dD += 2 * X - 2 * Y + 2;
+            d += 4 * X + 6;
         }
 
-        
+        //Plot he points in all 8 octants
+        plotPoints(x_center, y_center, X, Y);
     }
 }
 
@@ -132,7 +110,6 @@ int main()
 {
     int gDrive = DETECT;
     int gMode;
-    initgraph(&gDrive, &gMode, NULL);
 
     // Coordinates
     int x_center;
@@ -158,6 +135,7 @@ int main()
     else
     {
         // Draw Circle using Bresenham Circle Drawing Algorithm
+        initgraph(&gDrive, &gMode, NULL);
         DrawCircle(x_center, y_center, r);
         getch();
     }
