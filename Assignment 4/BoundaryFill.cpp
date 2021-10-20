@@ -13,17 +13,17 @@
 using namespace std;
 void boundary_fill_colour(int x, int y, int fill_colour, int boundary_colour)
 {
+    // Check if current pixel colour is not equal to boundary/colour to be filled
     if (getpixel(x, y) != boundary_colour && getpixel(x, y) != fill_colour)
     {
+        // Fill colour
         putpixel(x, y, fill_colour);
+
+        // Traverse 4 adjacent pixels
         boundary_fill_colour(x + 1, y, fill_colour, boundary_colour);
         boundary_fill_colour(x, y + 1, fill_colour, boundary_colour);
         boundary_fill_colour(x - 1, y, fill_colour, boundary_colour);
         boundary_fill_colour(x, y - 1, fill_colour, boundary_colour);
-        // boundary_fill_colour(x - 1, y - 1, fill_colour, boundary_colour);
-        // boundary_fill_colour(x - 1, y + 1, fill_colour, boundary_colour);
-        // boundary_fill_colour(x + 1, y - 1, fill_colour, boundary_colour);
-        // boundary_fill_colour(x + 1, y + 1, fill_colour, boundary_colour);
     }
 }
 int main()
@@ -56,6 +56,7 @@ int main()
     // SET seed and fill color
     int x_seed, y_seed, fill_colour;
     fill_colour = 14; // YELLOW
+    // Seed is the average of the coordinates
     x_seed = sum_x / numberOfSides;
     y_seed = sum_y / numberOfSides;
 
@@ -67,11 +68,9 @@ int main()
 
     // Draw Polygon
     drawpoly(numberOfSides + 1, coordinates);
-    putpixel(x_seed,y_seed,5);
+    
     //Fill Colour using Boundary Fill
-    delay(100);
     boundary_fill_colour(x_seed, y_seed, fill_colour, boundary_colour);
-    // cout << "Done\n";
     getch();
     closegraph();
     
