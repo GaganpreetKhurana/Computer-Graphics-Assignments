@@ -3,29 +3,18 @@
     1. Top Left is Origin(0,0)
     
     Command to run (Windows):
-    g++ Bresenham_Circle.cpp -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 && a
+    g++ MidPoint_Ellipse.cpp -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 && a
 */
 
 #include <graphics.h>
 #include <iostream>
-#include <math.h>
 using namespace std;
 
-void plotPoints(int x_center, int y_center, int X, int Y)
+void plotPoints(int x_center, int y_center, float X, float Y)
 {
     // (x,y)
     cout << "(" << X + x_center << ", " << -Y + y_center << ") | ";
     putpixel(X + x_center, -Y + y_center, 2);
-    delay(10);
-
-    // (y,x)
-    cout << "(" << Y + x_center << ", " << -X + y_center << ") | ";
-    putpixel(Y + x_center, -X + y_center, 3);
-    delay(10);
-
-    // (y,-x)
-    cout << "(" << Y + x_center << ", " << X + y_center << ") | ";
-    putpixel(Y + x_center, X + y_center, 4);
     delay(10);
 
     // (x,-y)
@@ -38,38 +27,31 @@ void plotPoints(int x_center, int y_center, int X, int Y)
     putpixel(-X + x_center, Y + y_center, 6);
     delay(10);
 
-    // (-y,-x)
-    cout << "(" << -Y + x_center << ", " << X + y_center << ") | ";
-    putpixel(-Y + x_center, X + y_center, 7);
-    delay(10);
-
-    // (-y,x)
-    cout << "(" << -Y + x_center << ", " << -X + y_center << ") | ";
-    putpixel(-Y + x_center, -X + y_center, 8);
-    delay(10);
-
     // (-x,y)
     cout << "(" << -X + x_center << ", " << -Y + y_center << ")\n";
     putpixel(-X + x_center, -Y + y_center, 9);
     delay(10);
 }
-void DrawCircle(int x_center, int y_center, int r)
+void DrawEllipse(int x_center, int y_center, int r_X, int r_Y)
 {
     cout << "Center: (" << x_center << "," << y_center << ")\n";
-    cout << "Radius: " << r << endl;
+    cout << "X Radius: " << r_X << endl;
+    cout << "Y Radius: " << r_Y << endl;
     cout << "Points: \n";
-    cout << "(x,y)  |  (y,x)   |  (y,-x)   |  (x,-y)  |   (-x,-y)   |  (-y,-x)   |  (-y,x)   |  (-x,y)\n";
+    cout << "(x,y)  |  (x,-y)  |   (-x,-y)   |  (-x,y)\n";
 
     // for printing text at desired screen location.
     char buffer[30];
 
     // Title
-    sprintf(buffer, " Bresenham Circle Drawing Algorithm ");
+    sprintf(buffer, " MidPoint Ellipse Drawing Algorithm ");
     outtextxy(200, 5, buffer);
 
     //Radius
-    sprintf(buffer, "Radius: %d", r);
+    sprintf(buffer, "X Radius: %d", r_X);
     outtextxy(250, 35, buffer);
+    sprintf(buffer, "Y Radius: %d", r_Y);
+    outtextxy(250, 50, buffer);
 
     //Centre Point
     putpixel(x_center, y_center, 10);
@@ -77,31 +59,66 @@ void DrawCircle(int x_center, int y_center, int r)
     outtextxy(x_center - 45, y_center + 15, buffer);
 
     // Starting Points
-    int X = 0;
-    int Y = r;
+    float X = 0;
+    float Y = r_Y;
 
     // Printing the initial point on the axes after translation
     plotPoints(x_center, y_center, X, Y);
 
-    // Initialising the value of d (Decision Parameter)
-    int d = 3 - 2 * r;
+    //  Region 1
 
-    while (Y >= X)
+    // Initialising the value of decisionParameter_1
+    int decisionParameter_1 = (r_Y * r_Y) - (r_X * r_X * r_Y) + (0.25 * r_X * r_X);
+
+    float dx = 2 * r_Y * r_Y * X;
+    float dy = 2 * r_X * r_X * Y;
+
+    while (dx < dy)
     {
         X++;
 
-        // Check the decision parameter and update Y,d accordingly
-        if (d > 0)
+        // Check the decision parameter and update values accordingly
+        if (decisionParameter_1 <= 0)
         {
-            Y--;
-            d += 4 * (X - Y) + 10;
+            dx += (2 * r_Y * r_Y);
+            decisionParameter_1 += dx + (r_Y * r_Y);
         }
         else
         {
-            d += 4 * X + 6;
+            Y--;
+            dx += (2 * r_Y * r_Y);
+            dy -= (2 * r_X * r_X);
+            decisionParameter_1 += dx - dy + (r_Y * r_Y);
         }
 
-        //Plot he points in all 8 octants
+        //Plot he points in all 4 quarters
+        plotPoints(x_center, y_center, X, Y);
+    }
+
+    //Region 2
+
+    // Initialising the value of decisionParameter_2
+    int decisionParameter_2 = ((r_Y * r_Y) * (X + 0.5) * (X + 0.5)) + ((r_X * r_X) * (Y - 1) * (Y - 1)) - (r_X * r_X * r_Y * r_Y);
+
+    while (Y >= 0)
+    {
+        Y--;
+
+        // Check the decision parameter and update values accordingly
+        if (decisionParameter_2 > 0)
+        {
+            dy -= (2 * r_X * r_X);
+            decisionParameter_2 += (r_X * r_X) - dy;
+        }
+        else
+        {
+            X++;
+            dx += (2 * r_Y * r_Y);
+            dy -= (2 * r_X * r_X);
+            decisionParameter_2 += dx - dy + (r_X * r_X);
+        }
+
+        //Plot he points in all 4 quarters
         plotPoints(x_center, y_center, X, Y);
     }
 }
@@ -114,7 +131,8 @@ int main()
     // Coordinates
     int x_center;
     int y_center;
-    int r;
+    int r_X;
+    int r_Y;
 
     // Take center coordinates and radius as input from user
     cout << "Enter coordinates of Center:\n";
@@ -123,20 +141,22 @@ int main()
     cout << "y: ";
     cin >> y_center;
 
-    cout << "Enter Radius: ";
-    cin >> r;
+    cout << "Enter X Radius: ";
+    cin >> r_X;
+    cout << "Enter Y Radius: ";
+    cin >> r_Y;
     cout << "\n\n";
 
-    if (r < 0)
+    if (r_X < 0 || r_Y < 0)
     {
         cout << "Radius cannot be negative!\n";
         return 0;
     }
     else
     {
-        // Draw Circle using Bresenham Circle Drawing Algorithm
+        // Draw Ellipse using MidPoint Ellipse Drawing Algorithm
         initgraph(&gDrive, &gMode, NULL);
-        DrawCircle(x_center, y_center, r);
+        DrawEllipse(x_center, y_center, r_X, r_Y);
         getch();
     }
 }

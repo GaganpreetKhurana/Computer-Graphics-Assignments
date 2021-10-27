@@ -4,14 +4,14 @@
     2. All inputs are +ve
     
     Command to run (Windows):
-    g++ BoundaryFill.cpp -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 && a
+    g++ FloodFill.cpp -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 && a
 */
 
 #include <graphics.h>
 #include <iostream>
 #include <math.h>
 using namespace std;
-void boundary_fill_colour(int x, int y, int fill_colour, int boundary_colour)
+void flood_fill_colour(int x, int y, int fill_colour, int boundary_colour)
 {
     // Check if current pixel colour is not equal to boundary/colour to be filled
     if (getpixel(x, y) != boundary_colour && getpixel(x, y) != fill_colour)
@@ -20,10 +20,10 @@ void boundary_fill_colour(int x, int y, int fill_colour, int boundary_colour)
         putpixel(x, y, fill_colour);
 
         // Traverse 4 adjacent pixels
-        boundary_fill_colour(x + 1, y, fill_colour, boundary_colour);
-        boundary_fill_colour(x, y + 1, fill_colour, boundary_colour);
-        boundary_fill_colour(x - 1, y, fill_colour, boundary_colour);
-        boundary_fill_colour(x, y - 1, fill_colour, boundary_colour);
+        flood_fill_colour(x + 1, y, fill_colour, boundary_colour);
+        flood_fill_colour(x, y + 1, fill_colour, boundary_colour);
+        flood_fill_colour(x - 1, y, fill_colour, boundary_colour);
+        flood_fill_colour(x, y - 1, fill_colour, boundary_colour);
     }
 }
 int main()
@@ -70,7 +70,7 @@ int main()
     drawpoly(numberOfSides + 1, coordinates);
     
     //Fill Colour using Boundary Fill
-    boundary_fill_colour(x_seed, y_seed, fill_colour, boundary_colour);
+    flood_fill_colour(x_seed, y_seed, fill_colour, boundary_colour);
     getch();
     closegraph();
     
