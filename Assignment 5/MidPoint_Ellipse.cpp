@@ -13,23 +13,23 @@ using namespace std;
 void plotPoints(int x_center, int y_center, float X, float Y)
 {
     // (x,y)
-    cout << "(" << X + x_center << ", " << -Y + y_center << ") | ";
-    putpixel(X + x_center, -Y + y_center, 2);
+    cout << "(" << X + x_center << ", " << Y + y_center << ") | ";
+    putpixel(X + x_center, Y + y_center, 2);
     delay(10);
 
     // (x,-y)
-    cout << "(" << X + x_center << ", " << Y + y_center << ") | ";
-    putpixel(X + x_center, Y + y_center, 5);
+    cout << "(" << X + x_center << ", " << -Y + y_center << ") | ";
+    putpixel(X + x_center, -Y + y_center, 5);
     delay(10);
 
     // (-x,-y)
-    cout << "(" << -X + x_center << ", " << Y + y_center << ") | ";
-    putpixel(-X + x_center, Y + y_center, 6);
+    cout << "(" << -X + x_center << ", " << -Y + y_center << ") | ";
+    putpixel(-X + x_center, -Y + y_center, 6);
     delay(10);
 
     // (-x,y)
-    cout << "(" << -X + x_center << ", " << -Y + y_center << ")\n";
-    putpixel(-X + x_center, -Y + y_center, 9);
+    cout << "(" << -X + x_center << ", " << Y + y_center << ")\n";
+    putpixel(-X + x_center, Y + y_center, 9);
     delay(10);
 }
 void DrawEllipse(int x_center, int y_center, int r_X, int r_Y)
