@@ -1,7 +1,6 @@
 /*
     Assumptions:
     1. Top Left is Origin(0,0)
-    2. All inputs are +ve
     
     Command to run (Windows):
     g++ FloodFill.cpp -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 && a
@@ -12,10 +11,11 @@
 using namespace std;
 
 const int BACKGROUND_COLOUR = 0; // Black
+
 void flood_fill_colour(int x, int y, int fill_colour)
 {
     // Check if current pixel colour is not equal to boundary/colour to be filled
-    if (getpixel(x, y) == BACKGROUND_COLOUR && getpixel(x, y) != fill_colour)
+    if (getpixel(x, y) == BACKGROUND_COLOUR)
     {
         // Fill colour
         putpixel(x, y, fill_colour);
@@ -72,5 +72,4 @@ int main()
     getch();
     closegraph();
 
-    cout << "Complete\n";
 }
