@@ -8,7 +8,7 @@
 
 #include <graphics.h>
 #include <iostream>
-#include<math.h>
+#include <math.h>
 using namespace std;
 
 pair<int, int> inputPoint()
@@ -27,7 +27,7 @@ int main()
     int gMode;
     initgraph(&gDrive, &gMode, NULL);
     const float PI = acos(-1);
-    cout << PI<<endl;
+    cout << PI << endl;
 
     // for printing text at desired screen location.
     char buffer[30];
@@ -39,13 +39,12 @@ int main()
     cout << "Options:\n";
     cout << "1. Translate a point P to P'\n";
     cout << "2. Translate a polygon\n";
-    cout<<"3. Rotate a point P by an angle Alpha.\n";
-    cout<<"4. Rotate a polygon by an angle Alpha.\n";
+    cout << "3. Rotate a point P by an angle Alpha.\n";
+    cout << "4. Rotate a polygon by an angle Alpha.\n";
     cout << "Enter Choice: ";
 
-
     int choice = 0;
-    cin>>choice;
+    cin >> choice;
     switch (choice)
     {
         case 1:
@@ -67,7 +66,7 @@ int main()
             // Point newPoint
             putpixel(newPoint.first, newPoint.second, 14);
             sprintf(buffer, "New Point: (%d,%d)", newPoint.first, newPoint.second);
-            outtextxy(newPoint.first +30 , newPoint.second + 20, buffer);
+            outtextxy(newPoint.first + 30, newPoint.second + 20, buffer);
 
             break;
         }
@@ -103,8 +102,8 @@ int main()
             //Translation
             for (int i = 0; i < numberOfSides; i++)
             {
-                coordinates[2 * i]+= translationFactor.first;
-                coordinates[2 * i + 1]+=translationFactor.second;
+                coordinates[2 * i] += translationFactor.first;
+                coordinates[2 * i + 1] += translationFactor.second;
             }
             coordinates[2 * numberOfSides] = coordinates[0];
             coordinates[2 * numberOfSides + 1] = coordinates[1];
@@ -120,7 +119,7 @@ int main()
             cout << "New Vertices (In Cyclic order):    x   y\n";
             for (int i = 0; i < numberOfSides; i++)
             {
-                cout << "Vertice " << i + 1 << ": (" << coordinates[2 * i] << ","<<coordinates[2 * i + 1]<<")\n";
+                cout << "Vertice " << i + 1 << ": (" << coordinates[2 * i] << "," << coordinates[2 * i + 1] << ")\n";
             }
 
             break;
@@ -132,23 +131,24 @@ int main()
 
             cout << "Enter Rotation Angle alpha (in degrees): ";
             float alpha;
-            cin>>alpha;
+            cin >> alpha;
 
             float angleInRadians = alpha * (PI / 180);
 
-            pair<int,int> pivot = make_pair(0,0);
+            pair<int, int> pivot = make_pair(0, 0);
             char rotationAboutOrigin = 'Y';
-            cout<<"Do you wish to rotate about origin?(Y/N) ";
-            cin >>rotationAboutOrigin;
-            if (rotationAboutOrigin == 'N'){
+            cout << "Do you wish to rotate about origin?(Y/N) ";
+            cin >> rotationAboutOrigin;
+            if (rotationAboutOrigin == 'N')
+            {
                 cout << "Enter the point about which you wish to rotate:\n";
-                pivot=inputPoint();
+                pivot = inputPoint();
             }
-            pair<float,float> shift = make_pair(P.first-pivot.first,P.second-pivot.second);
-            
+            pair<float, float> shift = make_pair(P.first - pivot.first, P.second - pivot.second);
+
             pair<float, float> newPoint;
-            newPoint.first = pivot.first + shift.first * cos(angleInRadians) - shift.second * sin (angleInRadians);
-            newPoint.second = pivot.second+ shift.first*sin(angleInRadians) + shift.second * cos(angleInRadians);
+            newPoint.first = pivot.first + shift.first * cos(angleInRadians) - shift.second * sin(angleInRadians);
+            newPoint.second = pivot.second + shift.first * sin(angleInRadians) + shift.second * cos(angleInRadians);
             cout << "New Point After Rotation: (" << newPoint.first << "," << newPoint.second << ")\n";
 
             // Point P
@@ -164,7 +164,81 @@ int main()
             // Point newPoint
             putpixel(newPoint.first, newPoint.second, 14);
             sprintf(buffer, "New Point: (%f,%f)", newPoint.first, newPoint.second);
-            outtextxy(newPoint.first +30 , newPoint.second + 20, buffer);
+            outtextxy(newPoint.first + 30, newPoint.second + 20, buffer);
+
+            break;
+        }
+        case 4:
+        {
+            // Take number of sides as Input
+            int numberOfSides;
+            cout << "Enter Number of Sides: ";
+            cin >> numberOfSides;
+
+            int coordinates[2 * (numberOfSides + 1)];
+
+            // Take coordinates as input from user
+            cout << "Enter Vertices (In Cyclic order):    x   y\n";
+            for (int i = 0; i < numberOfSides; i++)
+            {
+                cout << "Vertice " << i + 1 << ": ";
+                cin >> coordinates[2 * i] >> coordinates[2 * i + 1];
+            }
+            coordinates[2 * numberOfSides] = coordinates[0];
+            coordinates[2 * numberOfSides + 1] = coordinates[1];
+
+            // Set boundary colour to RED
+            int boundary_colour = 4;
+            setcolor(boundary_colour);
+
+            // Draw Polygon
+            drawpoly(numberOfSides + 1, coordinates);
+
+            cout << "Enter Rotation Angle alpha (in degrees): ";
+            float alpha;
+            cin >> alpha;
+
+            float angleInRadians = alpha * (PI / 180);
+
+            pair<int, int> pivot = make_pair(0, 0);
+            char rotationAboutOrigin = 'Y';
+            cout << "Do you wish to rotate about origin?(Y/N) ";
+            cin >> rotationAboutOrigin;
+            if (rotationAboutOrigin == 'N')
+            {
+                cout << "Enter the point about which you wish to rotate:\n";
+                pivot = inputPoint();
+            }
+            //Translation
+            pair<float, float> shift;
+            for (int i = 0; i < numberOfSides; i++)
+            {
+                shift.first = coordinates[2 * i] - pivot.first;
+                shift.second = coordinates[2 * i + 1] - pivot.second;
+                coordinates[2 * i] = pivot.first + shift.first * cos(angleInRadians) - shift.second * sin(angleInRadians);
+                coordinates[2 * i + 1] = pivot.second + shift.first * sin(angleInRadians) + shift.second * cos(angleInRadians);
+            }
+            coordinates[2 * numberOfSides] = coordinates[0];
+            coordinates[2 * numberOfSides + 1] = coordinates[1];
+
+            // Set boundary colour to YELLOW
+            boundary_colour = 14;
+            setcolor(boundary_colour);
+
+            // Draw Polygon
+            drawpoly(numberOfSides + 1, coordinates);
+
+            // New coordinates
+            cout << "New Vertices (In Cyclic order):    x   y\n";
+            for (int i = 0; i < numberOfSides; i++)
+            {
+                cout << "Vertice " << i + 1 << ": (" << coordinates[2 * i] << "," << coordinates[2 * i + 1] << ")\n";
+            }
+
+            // Point Pivot
+            putpixel(pivot.first, pivot.second, 10);
+            sprintf(buffer, "Pivot: (%d,%d)", pivot.first, pivot.second);
+            outtextxy(pivot.first - 30, pivot.second - 20, buffer);
 
             break;
         }
@@ -175,7 +249,6 @@ int main()
             break;
         }
     }
-
 
     getch();
     closegraph();
