@@ -157,7 +157,7 @@ int main()
             outtextxy(P.first - 30, P.second - 20, buffer);
 
             // Point Pivot
-            putpixel(pivot.first, pivot.second, 10);
+            putpixel(pivot.first, pivot.second, 6);
             sprintf(buffer, "Pivot: (%d,%d)", pivot.first, pivot.second);
             outtextxy(pivot.first - 30, pivot.second - 20, buffer);
 
