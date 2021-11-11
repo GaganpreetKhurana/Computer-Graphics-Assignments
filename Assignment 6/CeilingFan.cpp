@@ -7,6 +7,7 @@
 
     Initial objects are RED in colour
     Transformed objects are YELLOW in colour
+    Fan will run for 2 full rotations - 720 degrees total
 */
 
 #include <graphics.h>
@@ -73,7 +74,7 @@ int main()
 
     //Rotations
     cout << "Rotated Line End Points: \n";
-    for (int alpha = 1; alpha < 120; alpha++)
+    for (int alpha = 1; alpha < 6 * 120; alpha++)
     {
         angleInRadians = alpha * (PI / 180);
 
@@ -98,7 +99,7 @@ int main()
 
             // set previous coordinate
             previousCoordinates[i] = newPoint;
-            delay(30);
+            delay(5);
         }
         cout << endl;
         //Draw circle again after every iteration as line can overlap circle
@@ -106,6 +107,14 @@ int main()
         int boundary_colour = 4;
         setcolor(boundary_colour);
         circle(pivot.first, pivot.second, 35);
+
+        if (alpha % 120 == 1)
+        {
+            // Draw inital lines again
+            line(pivot.first, pivot.second, coordinates[0].first, coordinates[0].second);
+            line(pivot.first, pivot.second, coordinates[1].first, coordinates[1].second);
+            line(pivot.first, pivot.second, coordinates[2].first, coordinates[2].second);
+        }
     }
 
     // Draw inital lines again
