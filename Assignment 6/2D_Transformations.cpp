@@ -87,7 +87,7 @@ int main()
         // Point newPoint - YELLOW
         putpixel(newPoint.first, newPoint.second, 14);
         sprintf(buffer, "New Point: (%d,%d)", newPoint.first, newPoint.second);
-        outtextxy(newPoint.first + 30, newPoint.second + 20, buffer);
+        outtextxy(newPoint.first + 30, newPoint.second - 20, buffer);
 
         break;
     }
@@ -208,7 +208,7 @@ int main()
         // Point newPoint - YELLOW
         putpixel(newPoint.first, newPoint.second, 14);
         sprintf(buffer, "New Point: (%f,%f)", newPoint.first, newPoint.second);
-        outtextxy(newPoint.first + 30, newPoint.second + 20, buffer);
+        outtextxy(newPoint.first + 30, newPoint.second - 20, buffer);
 
         break;
     }
