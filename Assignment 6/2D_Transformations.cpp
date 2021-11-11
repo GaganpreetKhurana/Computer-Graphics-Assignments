@@ -8,6 +8,7 @@
 
 #include <graphics.h>
 #include <iostream>
+#include<math.h>
 using namespace std;
 
 pair<int, int> inputPoint()
@@ -25,6 +26,8 @@ int main()
     int gDrive = DETECT;
     int gMode;
     initgraph(&gDrive, &gMode, NULL);
+    const float PI = acos(-1);
+    cout << PI<<endl;
 
     // for printing text at desired screen location.
     char buffer[30];
@@ -36,6 +39,8 @@ int main()
     cout << "Options:\n";
     cout << "1. Translate a point P to P'\n";
     cout << "2. Translate a polygon\n";
+    cout<<"3. Rotate a point P by an angle Alpha.\n";
+    cout<<"4. Rotate a polygon by an angle Alpha.\n";
     cout << "Enter Choice: ";
 
 
@@ -117,6 +122,49 @@ int main()
             {
                 cout << "Vertice " << i + 1 << ": (" << coordinates[2 * i] << ","<<coordinates[2 * i + 1]<<")\n";
             }
+
+            break;
+        }
+        case 3:
+        {
+            cout << "Enter Point P:\n";
+            pair<int, int> P = inputPoint();
+
+            cout << "Enter Rotation Angle alpha (in degrees): ";
+            float alpha;
+            cin>>alpha;
+
+            float angleInRadians = alpha * (PI / 180);
+
+            pair<int,int> pivot = make_pair(0,0);
+            char rotationAboutOrigin = 'Y';
+            cout<<"Do you wish to rotate about origin?(Y/N) ";
+            cin >>rotationAboutOrigin;
+            if (rotationAboutOrigin == 'N'){
+                cout << "Enter the point about which you wish to rotate:\n";
+                pivot=inputPoint();
+            }
+            pair<float,float> shift = make_pair(P.first-pivot.first,P.second-pivot.second);
+            
+            pair<float, float> newPoint;
+            newPoint.first = pivot.first + shift.first * cos(angleInRadians) - shift.second * sin (angleInRadians);
+            newPoint.second = pivot.second+ shift.first*sin(angleInRadians) + shift.second * cos(angleInRadians);
+            cout << "New Point After Rotation: (" << newPoint.first << "," << newPoint.second << ")\n";
+
+            // Point P
+            putpixel(P.first, P.second, 4);
+            sprintf(buffer, "P: (%d,%d)", P.first, P.second);
+            outtextxy(P.first - 30, P.second - 20, buffer);
+
+            // Point Pivot
+            putpixel(pivot.first, pivot.second, 10);
+            sprintf(buffer, "Pivot: (%d,%d)", pivot.first, pivot.second);
+            outtextxy(pivot.first - 30, pivot.second - 20, buffer);
+
+            // Point newPoint
+            putpixel(newPoint.first, newPoint.second, 14);
+            sprintf(buffer, "New Point: (%f,%f)", newPoint.first, newPoint.second);
+            outtextxy(newPoint.first +30 , newPoint.second + 20, buffer);
 
             break;
         }
